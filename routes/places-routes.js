@@ -13,4 +13,8 @@ router.get('/:pid', placesControllers.getPlaceById);
 //Order of these routers are, therefore, important. the "user" is considered param for the first code segment and so this code block wont run.
 router.get('/user/:uid', placesControllers.getPlaceByUserId );
 
+
+//Any POST requests that targets '/api/places' route (look at app.js) will automatically reach this post('/) route
+router.post('/', placesControllers.createPlace);
+
 module.exports = router;
