@@ -5,20 +5,6 @@ const HttpError = require('../models/http-error');
 const getCoordsForAddress = require('../util/location');
 const Place = require('../models/place');
 
-let DUMMY_PLACES = [
-	{
-		id: 'p1',
-		title: 'The title',
-		description: 'The place',
-		location: {
-			lat: 40.7484405,
-			lng: -73.9878584
-		},
-		address: '20 W 34th St, New York, NY 10001, United States',
-		creator: 'u1'
-	}
-];
-
 
 async function getPlaceById(req, res, next) {
 	//This information can be retrieved because it is part of the url ('/:pid'). Check places-routes.js for the route
