@@ -42,7 +42,7 @@ app.use(function(error, req, res, next){
   res.json({message: error.message || 'An unknown error occured!'})
 });
 
-
+//"places" is the name of the db
 mongoose
   .connect('mongodb+srv://bnj997:Victoria2000@cluster0.ydtcj.mongodb.net/places?retryWrites=true&w=majority')
   .then(() => {
