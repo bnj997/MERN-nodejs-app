@@ -2,6 +2,7 @@ const { v4: uuidv4 } = require('uuid');
 const { validationResult } = require('express-validator');
 
 const HttpError = require('../models/http-error');
+const getCoordsForAddress = require('../util/location');
 
 let DUMMY_PLACES = [
 	{
@@ -51,18 +52,33 @@ function getPlacesByUserId(req, res, next) {
 }
 
 
-function createPlace(req, res, next) {
+//async since will be communicating with another server
+async function createPlace(req, res, next) {
 	//Works with the check middleware you put in places-routs.js
 	//returns any errors you get
 	const errors = validationResult(req);
 
 	if (!errors.isEmpty()) {
 		console.log(errors);
-		throw new HttpError('Invalid inputs passed, please check your data.', 422);
+		//with async, cant "throw" errors not must use next
+		next(new HttpError('Invalid inputs passed, please check your data.', 422));
 	}
 
 	//similar to doing "const title= req.body.title" but destructring makes it easy to do it all in one line
-	const {title, description, coordinates, address, creator} = req.body;
+	//dont include coordinates as will be generated automatically in next few lines
+	const {title, description, address, creator} = req.body;
+
+
+	//Need to test if coordinates actually relate to real location
+	//This uses another server so need to try and wait for other server to process
+	let coordinates;
+	try {
+		//converting address to coordinates
+		coordinates = await getCoordsForAddress(address);
+	} catch (error) {
+		return next(error);
+	}
+
 
 	const createdPlace = {
 		id: uuidv4(),
