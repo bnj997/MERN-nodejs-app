@@ -44,7 +44,7 @@ app.use(function(error, req, res, next){
 
 //"places" is the name of the db
 mongoose
-  .connect('mongodb+srv://bnj997:Victoria2000@cluster0.ydtcj.mongodb.net/places?retryWrites=true&w=majority')
+  .connect('mongodb+srv://bnj997:Victoria2000@cluster0.ydtcj.mongodb.net/places?retryWrites=true&w=majority', { useUnifiedTopology: true, useNewUrlParser: true})
   .then(() => {
     app.listen(5000);
   }) 
