@@ -2,16 +2,22 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const placesRoutes = require('./routes/places-routes');
+const usersRoutes = require('./routes/users-routes');
 const HttpError = require('./models/http-error')
 const app = express();
+
 
 //This will parse any incoming request body and extract any json data from there and convert to regular javascipt object/array
 //Will then call "next" automatically so can reach the next middleware line (app.use('/api/places', placesRoutes)) and also add the json data there
 app.use(bodyParser.json());
 
+
 //express will only forward requests to placesRoutes if their path starts with /api/places
 //if request path is /api/places, will trigger get method in place-routes
 app.use('/api/places', placesRoutes);
+
+app.use('/api/users', usersRoutes);
+
 
 //Only runs if we didnt send a response to one of our routes before
 //This is because if we did send a response, we dont call "next()", we just send a response and hence no other middleware function is reached
