@@ -1,31 +1,21 @@
 const { v4: uuidv4 } = require('uuid');
-const { validationResult } = require("express-validator")
+const { validationResult } = require('express-validator');
+
 const HttpError = require('../models/http-error');
 
 let DUMMY_PLACES = [
 	{
-		id: "p1",
-		title: "The title",
-		description: "The place",
-		address: "20 W 34th St, New York, NY 10001, United States",
+		id: 'p1',
+		title: 'The title',
+		description: 'The place',
 		location: {
 			lat: 40.7484405,
 			lng: -73.9878584
 		},
+		address: '20 W 34th St, New York, NY 10001, United States',
 		creator: 'u1'
-	},
-	{
-		id: "p2",
-		title: "The title2",
-		description: "The place2",
-		address: "20 W 34th St, New York, NY 10001, United States",
-		location: {
-			lat: 40.7484405,
-			lng: -73.9878584
-		},
-		creator: 'u2'
 	}
-]
+];
 
 
 function getPlaceById(req, res, next) {
@@ -68,7 +58,7 @@ function createPlace(req, res, next) {
 
 	if (!errors.isEmpty()) {
 		console.log(errors);
-		throw new HttpsError("Invalid inputs passed, please check your data.", 422);
+		throw new HttpError('Invalid inputs passed, please check your data.', 422);
 	}
 
 	//similar to doing "const title= req.body.title" but destructring makes it easy to do it all in one line
@@ -87,8 +77,18 @@ function createPlace(req, res, next) {
 	res.status(201).json({place: createdPlace});
 };
 
+
+
 function updatePlace(req, res, next) {
 	const {title, description} = req.body;
+
+	const errors = validationResult(req);
+
+	if (!errors.isEmpty()) {
+		console.log(errors);
+		throw new HttpError("Invalid inputs passed, please check your data.", 422);
+	}
+
 	const placeId = req.params.pid;
 	//Create copy of the old object you want to update
 	const updatedPlace = {...DUMMY_PLACES.find(p => p.id === placeId) };
