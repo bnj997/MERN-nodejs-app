@@ -61,7 +61,9 @@ async function createPlace(req, res, next) {
 	if (!errors.isEmpty()) {
 		console.log(errors);
 		//with async, cant "throw" errors not must use next
-		next(new HttpError('Invalid inputs passed, please check your data.', 422));
+		return next(
+			new HttpError('Invalid inputs passed, please check your data.', 422)
+		);
 	}
 
 	//similar to doing "const title= req.body.title" but destructring makes it easy to do it all in one line
