@@ -23,10 +23,11 @@ const userSchema = new Schema({
 		type: String,
 		required: true,
 	},
-	places: {
-		type: String,
-		required: true
-	}
+	places: [{                        //Put array here '[]' as users can have multiple places
+		type: mongoose.Types.ObjectId,
+		required: true,
+		ref: 'Place'
+	}]
 });
 
 
