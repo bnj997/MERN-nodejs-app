@@ -1,6 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const fs = require('fs');
+const path = require('path');
 
 const placesRoutes = require('./routes/places-routes');
 const usersRoutes = require('./routes/users-routes');
@@ -11,6 +13,9 @@ const app = express();
 //This will parse any incoming request body and extract any json data from there and convert to regular javascipt object/array
 //Will then call "next" automatically so can reach the next middleware line (app.use('/api/places', placesRoutes)) and also add the json data there
 app.use(bodyParser.json());
+
+//Deals with uploading images
+app.use('/uploads/images', express.static(path.join('uploads', 'images')));
 
 //Ensures that when we send response, it has these headers attached
 app.use((req, res, next) => {
@@ -43,6 +48,13 @@ app.use(function(req, res, next) {
 //Only executed on requests that have error attached to it
 //Will execute any middleware above if it yields an error
 app.use(function(error, req, res, next){
+  //checks if a file was wanted to be uploaded and if so, it will be deleted
+  if (req.file) {
+    fs.unlink(req.file.path, () => {
+      console.log(err);
+    });
+  }
+
   //check if response has already been sent
   if (res.headerSent) {
     //wont send a response on our own
