@@ -14,7 +14,7 @@ const app = express();
 //Will then call "next" automatically so can reach the next middleware line (app.use('/api/places', placesRoutes)) and also add the json data there
 app.use(bodyParser.json());
 
-//Deals with uploading images
+//Deals with delivering images to the front end
 app.use('/uploads/images', express.static(path.join('uploads', 'images')));
 
 //Ensures that when we send response, it has these headers attached
