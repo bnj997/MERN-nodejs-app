@@ -12,6 +12,17 @@ const app = express();
 //Will then call "next" automatically so can reach the next middleware line (app.use('/api/places', placesRoutes)) and also add the json data there
 app.use(bodyParser.json());
 
+//Ensures that when we send response, it has these headers attached
+app.use((req, res, next) => {
+  //Controls which domains have access
+  res.setHeader('Access-Control-Allow-Origin', '*')
+  //Specifies which headers these requests sent by browsers may have
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization')
+  //Controls which methods may be used by front end
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE')
+  next();
+});
+
 
 //express will only forward requests to placesRoutes if their path starts with /api/places
 //if request path is /api/places, will trigger get method in place-routes
