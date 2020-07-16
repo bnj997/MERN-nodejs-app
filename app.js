@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -66,11 +67,14 @@ app.use(function(error, req, res, next){
 });
 
 //"places" is the name of the db
+const USERNAME = process.env.USERNAME;
+const PASSWORD = process.env.PASSWORD;
 mongoose
-  .connect('mongodb+srv://bnj997:Victoria2000@cluster0.ydtcj.mongodb.net/places?retryWrites=true&w=majority', { useUnifiedTopology: true, useNewUrlParser: true})
+  .connect(`mongodb+srv://${USERNAME}:${PASSWORD}@cluster0.ydtcj.mongodb.net/places?retryWrites=true&w=majority`, { useUnifiedTopology: true, useNewUrlParser: true})
+  
   .then(() => {
     app.listen(5000);
   }) 
   .catch(() => {
-    console.log(err);
+    console.log(error);
   });
